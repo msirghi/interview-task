@@ -1,4 +1,4 @@
-package com.interview.interview.entities;
+package com.interview.interview.dto;
 
 import lombok.Getter;
 import lombok.Setter;
