@@ -7,10 +7,10 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
-@Table(name = "X")
 @Entity
 @Getter
 @Setter
+@Table(name = "X")
 public class TaskModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,3 +55,5 @@ public class TaskModel {
             + hColumn  + ", " + iColumn + ", " + jColumn;
   }
 }
+
+

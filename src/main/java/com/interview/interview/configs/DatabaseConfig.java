@@ -1,7 +1,6 @@
 package com.interview.interview.configs;
 
 import com.interview.interview.model.TaskModel;
-import com.interview.interview.parse.ParseFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ import java.sql.SQLException;
 public class DatabaseConfig {
   private static Connection connection;
   private static PreparedStatement prepStatement;
-  private static final Logger LOGGER = LoggerFactory.getLogger(ParseFile.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConfig.class);
   private static final String DATABASE_DRIVER = "org.h2.Driver";
   private static final String DATABASE_CONNECTION = "jdbc:h2:mem:testdb";
   private static final String DATABASE_USER = "sa";
