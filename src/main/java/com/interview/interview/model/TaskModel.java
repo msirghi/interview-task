@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Table(name = "X")
 @Entity
@@ -29,6 +30,7 @@ public class TaskModel {
   private String dColumn;
 
   @Column(name = "E")
+  @Size(max = 1355)
   private String eColumn;
 
   @Column(name = "F")
@@ -38,10 +40,10 @@ public class TaskModel {
   private String gColumn;
 
   @Column(name = "H")
-  private boolean hColumn;
+  private String hColumn;
 
   @Column(name = "I")
-  private boolean iColumn;
+  private String iColumn;
 
   @Column(name = "J")
   private String jColumn;
