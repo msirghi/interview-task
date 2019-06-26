@@ -1,4 +1,4 @@
-package com.interview.interview.dto;
+package com.interview.interview.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @ToString
-public class TaskEntity {
+public class TaskModel {
   @Column(name = "A")
   private String aColumn;
 
