@@ -1,17 +1,21 @@
 package com.interview.interview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "X")
-public class TaskModel {
+public class RecordModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -29,7 +33,7 @@ public class TaskModel {
   private String dColumn;
 
   @Column(name = "E")
-  @Size(max = 10000)
+  @Size(max = 9999)
   private String eColumn;
 
   @Column(name = "F")
@@ -49,10 +53,12 @@ public class TaskModel {
 
   @Override
   public String toString() {
-    return aColumn + ", " + bColumn + ", " + cColumn
-            + ", " + dColumn  + ", " + eColumn  + ", "
+    return aColumn + ", "
+            + bColumn + ", " + cColumn + ", "
+            + dColumn  + ", " + eColumn  + ", "
             + fColumn  + ", " + gColumn  + ", "
-            + hColumn  + ", " + iColumn + ", " + jColumn;
+            + hColumn  + ", " + iColumn + ", "
+            + jColumn;
   }
 }
 

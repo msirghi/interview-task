@@ -1,13 +1,12 @@
-package com.interview.interview.configs;
+package com.interview.interview.config;
 
-import com.interview.interview.model.TaskModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.interview.interview.model.RecordModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DatabaseConfig {
   private static Connection connection;
@@ -17,31 +16,31 @@ public class DatabaseConfig {
   private static final String DATABASE_CONNECTION = "jdbc:h2:mem:testdb";
   private static final String DATABASE_USER = "sa";
   private static final String DATABASE_PASSWORD = "secret";
-  private static final String sqlQuery = "INSERT INTO X (A, B, C, D, E, F, G, H, I, J) " +
-          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  private static final String sqlQuery = "INSERT INTO X (A, B, C, D, E, F, G, H, I, J) "
+        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   public DatabaseConfig() {
     connectDB();
-    getDBConnection();
+    getDbConnection();
   }
 
-  private static Connection getDBConnection() {
-    Connection H2DBConnection = null;
+  private static Connection getDbConnection() {
+    Connection h2DbConnection = null;
     try {
       Class.forName(DATABASE_DRIVER);
-      H2DBConnection = DriverManager
+      h2DbConnection = DriverManager
               .getConnection(DATABASE_CONNECTION, DATABASE_USER, DATABASE_PASSWORD);
-      return H2DBConnection;
+      return h2DbConnection;
     } catch (ClassNotFoundException ex) {
       LOGGER.warn(ex.toString());
     } catch (SQLException ex) {
       LOGGER.warn("Error connecting to db. Verify data.");
     }
-    return H2DBConnection;
+    return h2DbConnection;
   }
 
   public static void connectDB() {
-    connection = getDBConnection();
+    connection = getDbConnection();
     try {
       connection.setAutoCommit(false);
     } catch (SQLException e) {
@@ -49,19 +48,19 @@ public class DatabaseConfig {
     }
   }
 
-  public void performSqlStatement(TaskModel taskModel) {
+  public void performSqlStatement(RecordModel recordModel) {
     try {
       prepStatement = connection.prepareStatement(sqlQuery);
-      prepStatement.setString(1, taskModel.getAColumn());
-      prepStatement.setString(2, taskModel.getBColumn());
-      prepStatement.setString(3, taskModel.getCColumn());
-      prepStatement.setString(4, taskModel.getDColumn());
-      prepStatement.setString(5, taskModel.getEColumn());
-      prepStatement.setString(6, taskModel.getFColumn());
-      prepStatement.setString(7, taskModel.getGColumn());
-      prepStatement.setString(8, taskModel.getHColumn());
-      prepStatement.setString(9, taskModel.getIColumn());
-      prepStatement.setString(10, taskModel.getJColumn());
+      prepStatement.setString(1, recordModel.getAColumn());
+      prepStatement.setString(2, recordModel.getBColumn());
+      prepStatement.setString(3, recordModel.getCColumn());
+      prepStatement.setString(4, recordModel.getDColumn());
+      prepStatement.setString(5, recordModel.getEColumn());
+      prepStatement.setString(6, recordModel.getFColumn());
+      prepStatement.setString(7, recordModel.getGColumn());
+      prepStatement.setString(8, recordModel.getHColumn());
+      prepStatement.setString(9, recordModel.getIColumn());
+      prepStatement.setString(10, recordModel.getJColumn());
       prepStatement.executeUpdate();
       prepStatement.close();
       connection.commit();

@@ -1,4 +1,4 @@
-package com.interview.interview.configs;
+package com.interview.interview.config;
 
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;

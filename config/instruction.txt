@@ -1,0 +1,2 @@
+1) please install https://github.com/jshiell/checkstyle-idea plugin in your ide
+2) Import Schema in Code Style toolbar

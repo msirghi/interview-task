@@ -1,16 +1,14 @@
 package com.interview.interview.parse;
 
-import com.interview.interview.configs.DatabaseConfig;
-import com.interview.interview.model.TaskModel;
+import com.interview.interview.config.DatabaseConfig;
+import com.interview.interview.model.RecordModel;
 import com.opencsv.CSVReader;
-import lombok.ToString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import lombok.ToString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ToString
 public class ParseFile {
@@ -33,13 +31,14 @@ public class ParseFile {
   public void parseCvs() throws Exception {
     String[] row;
     String[] tempRow;
-    FileWriter csvWriter = new FileWriter("bad-data-"+ System.currentTimeMillis() + ".csv");
+    FileWriter csvWriter = new FileWriter("bad-data-"
+            + System.currentTimeMillis() + ".csv");
 
     while ((row = reader.readNext()) != null) {
       recordsReceived++;
       int goodRecordCounter = 1;
       tempRow = row;
-      TaskModel record = new TaskModel();
+      RecordModel record = new RecordModel();
       try {
         for (String column : row) {
           emptyCheck(column);
@@ -49,7 +48,7 @@ public class ParseFile {
       } catch (IllegalAccessException e) {
         recordsFailed++;
         int badRecordColumn = 1;
-        TaskModel badRecord = new TaskModel();
+        RecordModel badRecord = new RecordModel();
         for (String token : tempRow) {
           setModelField(badRecord, badRecordColumn++, token);
         }
@@ -61,38 +60,50 @@ public class ParseFile {
     LOGGER.error("Records received: " + recordsReceived);
     LOGGER.error("Records successful: " + (recordsReceived - recordsFailed));
     LOGGER.error("Records failed: " + recordsFailed);
-
     csvWriter.close();
     reader.close();
   }
 
-  private static void setModelField(TaskModel taskModel, Integer j, String token) {
+  private static void setModelField(RecordModel recordModel, Integer j, String token) {
     switch (j) {
       case 1:
-        taskModel.setAColumn(token);
+        recordModel.setAColumn(token);
+        break;
       case 2:
-        taskModel.setBColumn(token);
+        recordModel.setBColumn(token);
+        break;
       case 3:
-        taskModel.setCColumn(token);
+        recordModel.setCColumn(token);
+        break;
       case 4:
-        taskModel.setDColumn(token);
+        recordModel.setDColumn(token);
+        break;
       case 5:
-        taskModel.setEColumn(token);
+        recordModel.setEColumn(token);
+        break;
       case 6:
-        taskModel.setFColumn(token);
+        recordModel.setFColumn(token);
+        break;
       case 7:
-        taskModel.setGColumn(token);
+        recordModel.setGColumn(token);
+        break;
       case 8:
-        taskModel.setHColumn(token);
+        recordModel.setHColumn(token);
+        break;
       case 9:
-        taskModel.setIColumn(token);
+        recordModel.setIColumn(token);
+        break;
       case 10:
-        taskModel.setJColumn(token);
+        recordModel.setJColumn(token);
+        break;
+      default:
+        break;
     }
   }
 
   private static void emptyCheck(String token) throws IllegalAccessException {
-    if (token.isEmpty())
+    if (token.isEmpty()) {
       throw new IllegalAccessException();
+    }
   }
 }
