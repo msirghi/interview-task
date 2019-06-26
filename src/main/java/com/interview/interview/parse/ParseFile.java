@@ -39,7 +39,7 @@ public class ParseFile {
         result.add(taskModel);
       }
     }
-//    result.forEach(System.out::println);
+    result.forEach(System.out::println);
     reader.close();
   }
 

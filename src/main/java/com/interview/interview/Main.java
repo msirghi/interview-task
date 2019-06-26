@@ -7,15 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-@SpringBootApplication
 public class Main {
   private static final String path = "C:\\Users\\Михаил\\Desktop\\Interview-task-data-osh (2).csv";
   private static Logger logger = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) {
-    SpringApplication app = new SpringApplication(Main.class);
-    ApplicationContext context = app.run(args);
-
     try {
       new ParseFile(path).parseCvs();
     } catch (Exception e) {
