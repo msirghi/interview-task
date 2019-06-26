@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Getter
 @Setter
-@ToString
 public class TaskModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +46,12 @@ public class TaskModel {
 
   @Column(name = "J")
   private String jColumn;
+
+  @Override
+  public String toString() {
+    return aColumn + ", " + bColumn + ", " + cColumn
+            + ", " + dColumn  + ", " + eColumn  + ", "
+            + fColumn  + ", " + gColumn  + ", "
+            + hColumn  + ", " + iColumn + ", " + jColumn;
+  }
 }

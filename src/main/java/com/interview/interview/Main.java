@@ -14,7 +14,7 @@ import java.sql.Statement;
 
 @SpringBootApplication
 public class Main {
-  private static final String path = "C:\\Users\\Михаил\\Desktop\\Interview-task-data-osh (2).csv";
+  private static final String path = "C:\\Users\\Serven\\Desktop\\Interview-task-data-osh (2).csv";
   private static Logger logger = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) {
