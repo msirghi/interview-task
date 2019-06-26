@@ -2,20 +2,48 @@ package com.interview.interview.parse;
 
 import com.interview.interview.model.TaskModel;
 import com.opencsv.CSVReader;
+import lombok.ToString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 public class ParseFile {
-  private String path;
+  private CSVReader reader;
+  private Logger logger = LoggerFactory.getLogger(ParseFile.class);
 
   public ParseFile(String path) {
-    this.path = path;
+    try {
+      reader = new CSVReader(new FileReader(path), ',');
+    } catch (FileNotFoundException e) {
+      logger.error("File not found.");
+    }
   }
 
-  private static void set(TaskModel taskModel, Integer j, String token) {
+  public void parseCvs() throws Exception {
+    List<TaskModel> result = new ArrayList<>();
+    int i = 0;
+    String[] nextLine;
+
+    while ((nextLine = reader.readNext()) != null && i++ < 100) {
+      int j = 0;
+      if (i != 1) {
+        TaskModel taskModel = new TaskModel();
+        for (String token : nextLine) {
+          setModelField(taskModel, j++, token);
+        }
+        result.add(taskModel);
+      }
+    }
+//    result.forEach(System.out::println);
+    reader.close();
+  }
+
+  private static void setModelField(TaskModel taskModel, Integer j, String token) {
     switch (j) {
       case 0:
         taskModel.setAColumn(token);
@@ -38,27 +66,5 @@ public class ParseFile {
       case 9:
         taskModel.setJColumn(token);
     }
-  }
-
-  public void parseCvs() throws Exception {
-    List<TaskModel> list = new ArrayList<>();
-    CSVReader reader;
-    int i = 0;
-
-    reader = new CSVReader(new FileReader(path), ',');
-    String[] nextLine;
-
-    while ((nextLine = reader.readNext()) != null && i++ < 5) {
-      int j = 0;
-      if (i != 1) {
-        TaskModel taskModel = new TaskModel();
-        for (String token : nextLine) {
-          set(taskModel, j++, token);
-        }
-        list.add(taskModel);
-      }
-    }
-    list.forEach(System.out::println);
-    reader.close();
   }
 }

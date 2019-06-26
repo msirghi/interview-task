@@ -4,14 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "X")
+@Entity
 @Getter
 @Setter
 @ToString
 public class TaskModel {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
   @Column(name = "A")
   private String aColumn;
 
