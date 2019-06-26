@@ -5,10 +5,16 @@ import com.opencsv.CSVReader;
 import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.sql.*;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,45 +27,20 @@ public class ParseFile {
   private static final String DATABASE_CONNECTION = "jdbc:h2:mem:testdb";
   private static final String DATABASE_USER = "sa";
   private static final String DATABASE_PASSWORD = "secret";
-
-//  public static void createDBTable() {
-//    String CreateSQLQuery = "CREATE TABLE WORKERS(employeeid int auto_increment primary key, "
-//            + "                                firstname varchar(100), "
-//            + "                                lastname varchar(100), "
-//            + "                                department varchar(100),"
-//            + "                                location varchar(10))";
-//    Connection connection = getDBConnection();
-//    try {
-//      //Set auto commit to false
-//      connection.setAutoCommit(false);
-//      //Create a Statement Object
-//      Statement statement = connection.createStatement();
-//      //Execute the statement
-//      statement.execute(CreateSQLQuery);
-//      //Close the Statement Object
-//      statement.close();
-//      //Close the Connection Object
-//      connection.commit();
-//    }
-//    catch(Exception ex) {
-//      System.out.println(ex.toString());
-//    }
-//    System.out.println("Successfully Created WORKERS Table!");
-//  }
+  private static final String sqlQuery = "INSERT INTO X (A, B, C, D, E, F, G, H, I, J) " +
+          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   private static Connection getDBConnection() {
     Connection H2DBConnection = null;
     try {
       Class.forName(DATABASE_DRIVER);
-    }
-    catch (ClassNotFoundException ex) {
+    } catch (ClassNotFoundException ex) {
       System.out.println(ex.toString());
     }
     try {
       H2DBConnection = DriverManager.getConnection(DATABASE_CONNECTION, DATABASE_USER, DATABASE_PASSWORD);
       return H2DBConnection;
-    }
-    catch (SQLException ex) {
+    } catch (SQLException ex) {
       System.out.println(ex.toString());
     }
     return H2DBConnection;
@@ -68,31 +49,28 @@ public class ParseFile {
   public ParseFile(String path) {
     try {
       reader = new CSVReader(new FileReader(path), ',');
-    } catch (FileNotFoundException e) {
+      reader.readNext();
+    } catch (IOException e) {
       logger.error("File not found.");
     }
   }
 
   public void parseCvs() throws Exception {
     List<TaskModel> result = new ArrayList<>();
-    int i = 0;
     String[] nextLine;
-
     Connection connection = getDBConnection();
-
     PreparedStatement prepStatement;
-    while ((nextLine = reader.readNext()) != null && i++ < 5) {
-      connection.setAutoCommit(false);
+    connection.setAutoCommit(false);
 
-      int j = 0;
-      if (i != 1) {
-        TaskModel taskModel = new TaskModel();
+    while ((nextLine = reader.readNext()) != null) {
+      int j = 1;
+      TaskModel taskModel = new TaskModel();
+      try {
         for (String token : nextLine) {
+          emptyCheck(token);
           setModelField(taskModel, j++, token);
         }
-        prepStatement = connection
-                .prepareStatement("INSERT INTO X (A, B, C, D, E, F, G, H, I, J) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        prepStatement = connection.prepareStatement(sqlQuery);
         prepStatement.setString(1, taskModel.getAColumn());
         prepStatement.setString(2, taskModel.getBColumn());
         prepStatement.setString(3, taskModel.getCColumn());
@@ -103,12 +81,12 @@ public class ParseFile {
         prepStatement.setString(8, taskModel.getHColumn());
         prepStatement.setString(9, taskModel.getIColumn());
         prepStatement.setString(10, taskModel.getJColumn());
-        int rc = prepStatement.executeUpdate();
+        prepStatement.executeUpdate();
         prepStatement.close();
-
-        //Close the Connection Object
         connection.commit();
         result.add(taskModel);
+      } catch (IllegalAccessException e) {
+        continue;
       }
     }
     result.forEach(System.out::println);
@@ -117,26 +95,31 @@ public class ParseFile {
 
   private static void setModelField(TaskModel taskModel, Integer j, String token) {
     switch (j) {
-      case 0:
-        taskModel.setAColumn(token);
       case 1:
-        taskModel.setBColumn(token);
+        taskModel.setAColumn(token);
       case 2:
-        taskModel.setCColumn(token);
+        taskModel.setBColumn(token);
       case 3:
-        taskModel.setDColumn(token);
+        taskModel.setCColumn(token);
       case 4:
-        taskModel.setEColumn(token);
+        taskModel.setDColumn(token);
       case 5:
-        taskModel.setFColumn(token);
+        taskModel.setEColumn(token);
       case 6:
-        taskModel.setGColumn(token);
+        taskModel.setFColumn(token);
       case 7:
-        taskModel.setHColumn(token);
+        taskModel.setGColumn(token);
       case 8:
-        taskModel.setIColumn(token);
+        taskModel.setHColumn(token);
       case 9:
+        taskModel.setIColumn(token);
+      case 10:
         taskModel.setJColumn(token);
     }
+  }
+
+  private static void emptyCheck(String token) throws IllegalAccessException {
+    if (token.isEmpty())
+      throw new IllegalAccessException();
   }
 }

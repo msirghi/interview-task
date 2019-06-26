@@ -30,7 +30,7 @@ public class TaskModel {
   private String dColumn;
 
   @Column(name = "E")
-  @Size(max = 1355)
+  @Size(max = 10000)
   private String eColumn;
 
   @Column(name = "F")
