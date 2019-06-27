@@ -6,6 +6,8 @@ import com.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,32 +38,30 @@ public class ParseFile {
 
     while ((row = reader.readNext()) != null) {
       recordsReceived++;
-      int fileColumn = 1;
+      AtomicInteger fileColumn = new AtomicInteger(1);
       tempRow = row;
       RecordModel record = new RecordModel();
       try {
         for (String column : row) {
           emptyCheck(column);
-          setModelField(record, fileColumn++, column);
+          setModelField(record, fileColumn.getAndIncrement(), column);
         }
         databaseConfig.performSqlStatement(record);
       } catch (IllegalAccessException e) {
         recordsFailed++;
-        fileColumn = 1;
+        fileColumn.set(1);
         RecordModel badRecord = new RecordModel();
         for (String column : tempRow) {
-          setModelField(badRecord, fileColumn++, column);
+          setModelField(badRecord, fileColumn.getAndIncrement(), column);
         }
         csvWriter.append(String.join(",", badRecord.toString()));
         csvWriter.append("\n");
         csvWriter.flush();
       }
     }
-    LOGGER.error("Records received: " + recordsReceived);
-    LOGGER.error("Records successful: " + (recordsReceived - recordsFailed));
-    LOGGER.error("Records failed: " + recordsFailed);
     csvWriter.close();
     reader.close();
+    printStatistics();
   }
 
   private static void setModelField(RecordModel recordModel, Integer j, String token) {
@@ -105,5 +105,11 @@ public class ParseFile {
     if (token.isEmpty()) {
       throw new IllegalAccessException();
     }
+  }
+
+  private void printStatistics() {
+    LOGGER.error("Records received: " + recordsReceived);
+    LOGGER.error("Records successful: " + (recordsReceived - recordsFailed));
+    LOGGER.error("Records failed: " + recordsFailed);
   }
 }
