@@ -13,14 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ToString
-public class ParseFile {
+public class FileParser {
   private CSVReader reader;
   private long recordsReceived;
   private long recordsFailed;
   private DatabaseConfig databaseConfig;
-  private static final Logger LOGGER = LoggerFactory.getLogger(ParseFile.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(FileParser.class);
 
-  public ParseFile(String path) {
+  public FileParser(String path) {
     try {
       reader = new CSVReader(new FileReader(path), ',');
       reader.readNext();
@@ -38,23 +38,18 @@ public class ParseFile {
 
     while ((row = reader.readNext()) != null) {
       recordsReceived++;
-      AtomicInteger fileColumn = new AtomicInteger(1);
+      int fileColumn = 1;
       tempRow = row;
       RecordModel record = new RecordModel();
       try {
         for (String column : row) {
           emptyCheck(column);
-          setModelField(record, fileColumn.getAndIncrement(), column);
+          record.setColumn(fileColumn++, column);
         }
         databaseConfig.performSqlStatement(record);
       } catch (IllegalAccessException e) {
         recordsFailed++;
-        fileColumn.set(1);
-        RecordModel badRecord = new RecordModel();
-        for (String column : tempRow) {
-          setModelField(badRecord, fileColumn.getAndIncrement(), column);
-        }
-        csvWriter.append(String.join(",", badRecord.toString()));
+        csvWriter.append(String.join(",", tempRow));
         csvWriter.append("\n");
         csvWriter.flush();
       }
@@ -62,43 +57,6 @@ public class ParseFile {
     csvWriter.close();
     reader.close();
     printStatistics();
-  }
-
-  private static void setModelField(RecordModel recordModel, Integer j, String token) {
-    switch (j) {
-      case 1:
-        recordModel.setAColumn(token);
-        break;
-      case 2:
-        recordModel.setBColumn(token);
-        break;
-      case 3:
-        recordModel.setCColumn(token);
-        break;
-      case 4:
-        recordModel.setDColumn(token);
-        break;
-      case 5:
-        recordModel.setEColumn(token);
-        break;
-      case 6:
-        recordModel.setFColumn(token);
-        break;
-      case 7:
-        recordModel.setGColumn(token);
-        break;
-      case 8:
-        recordModel.setHColumn(token);
-        break;
-      case 9:
-        recordModel.setIColumn(token);
-        break;
-      case 10:
-        recordModel.setJColumn(token);
-        break;
-      default:
-        break;
-    }
   }
 
   private static void emptyCheck(String token) throws IllegalAccessException {

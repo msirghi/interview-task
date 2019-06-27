@@ -1,6 +1,6 @@
 package com.interview.interview;
 
-import com.interview.interview.parse.ParseFile;
+import com.interview.interview.parse.FileParser;
 import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class Application {
   public static void main(String[] args) {
     new SpringApplication(Application.class).run(args);
     try {
-      new ParseFile(path).parseCvs();
+      new FileParser(path).parseCvs();
     } catch (Exception e) {
       logger.error("Error while parsing the file.");
     }

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -79,14 +80,31 @@ public class RecordModel {
     return null;
   }
 
-  @Override
-  public String toString() {
-    return aColumn + ", "
-            + bColumn + ", " + cColumn + ", "
-            + dColumn  + ", " + eColumn  + ", "
-            + fColumn  + ", " + gColumn  + ", "
-            + hColumn  + ", " + iColumn + ", "
-            + jColumn;
+  public void setColumn(int index, String token) {
+    switch (index) {
+      case 1:
+        this.setAColumn(token);
+      case 2:
+        this.setBColumn(token);
+      case 3:
+        this.setCColumn(token);
+      case 4:
+        this.setDColumn(token);
+      case 5:
+        this.setEColumn(token);
+      case 6:
+        this.setFColumn(token);
+      case 7:
+        this.setGColumn(token);
+      case 8:
+        this.setHColumn(token);
+      case 9:
+        this.setIColumn(token);
+      case 10:
+        this.setJColumn(token);
+      default:
+        break;
+    }
   }
 }
 
