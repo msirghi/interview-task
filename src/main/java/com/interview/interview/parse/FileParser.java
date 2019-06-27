@@ -6,7 +6,6 @@ import com.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.ToString;
 import org.slf4j.Logger;
@@ -38,20 +37,20 @@ public class FileParser {
 
     while ((row = reader.readNext()) != null) {
       recordsReceived++;
-      int fileColumn = 1;
+      int columnCounter = 1;
       tempRow = row;
       RecordModel record = new RecordModel();
       try {
-        for (String column : row) {
-          emptyCheck(column);
-          record.setColumn(fileColumn++, column);
+        for (String columnText : row) {
+          emptyCheck(columnText);
+          record.setColumn(columnCounter++, columnText);
         }
         databaseConfig.performSqlStatement(record);
       } catch (IllegalAccessException e) {
         recordsFailed++;
-        csvWriter.append(String.join(",", tempRow));
-        csvWriter.append("\n");
-        csvWriter.flush();
+        csvWriter.append(String.join(",", tempRow))
+                .append("\n")
+                .flush();
       }
     }
     csvWriter.close();
