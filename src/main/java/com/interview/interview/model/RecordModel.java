@@ -51,6 +51,34 @@ public class RecordModel {
   @Column(name = "J")
   private String jColumn;
 
+  public String getColumn(int index) {
+    switch (index) {
+      case 1:
+        return this.aColumn;
+      case 2:
+        return this.bColumn;
+      case 3:
+        return this.cColumn;
+      case 4:
+        return this.dColumn;
+      case 5:
+        return this.eColumn;
+      case 6:
+        return this.fColumn;
+      case 7:
+        return this.gColumn;
+      case 8:
+        return this.hColumn;
+      case 9:
+        return this.iColumn;
+      case 10:
+        return this.jColumn;
+      default:
+        break;
+    }
+    return null;
+  }
+
   @Override
   public String toString() {
     return aColumn + ", "

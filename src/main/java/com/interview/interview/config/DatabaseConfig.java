@@ -51,16 +51,9 @@ public class DatabaseConfig {
   public void performSqlStatement(RecordModel recordModel) {
     try {
       prepStatement = connection.prepareStatement(sqlQuery);
-      prepStatement.setString(1, recordModel.getAColumn());
-      prepStatement.setString(2, recordModel.getBColumn());
-      prepStatement.setString(3, recordModel.getCColumn());
-      prepStatement.setString(4, recordModel.getDColumn());
-      prepStatement.setString(5, recordModel.getEColumn());
-      prepStatement.setString(6, recordModel.getFColumn());
-      prepStatement.setString(7, recordModel.getGColumn());
-      prepStatement.setString(8, recordModel.getHColumn());
-      prepStatement.setString(9, recordModel.getIColumn());
-      prepStatement.setString(10, recordModel.getJColumn());
+      for (int i = 1; i <= 10; i++) {
+        prepStatement.setString(i, recordModel.getColumn(i));
+      }
       prepStatement.executeUpdate();
       prepStatement.close();
       connection.commit();
