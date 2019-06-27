@@ -39,12 +39,12 @@ public class DatabaseConfig {
     return h2DbConnection;
   }
 
-  public static void connectDB() {
+  private static void connectDB() {
     connection = getDbConnection();
     try {
       connection.setAutoCommit(false);
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOGGER.error("Error while connecting to database.");
     }
   }
 

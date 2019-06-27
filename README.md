@@ -1,5 +1,5 @@
 # Interview task #
-Java application that consumes a .CSV file, parse the data and insert to database.
+Java application that consumes a .CSV file, parses the data and inserts to database.
 
 ## Requirements ###
 * Java 8

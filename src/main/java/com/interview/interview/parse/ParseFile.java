@@ -28,7 +28,7 @@ public class ParseFile {
     }
   }
 
-  public void parseCvs() throws Exception {
+  public synchronized void parseCvs() throws Exception {
     String[] row;
     String[] tempRow;
     FileWriter csvWriter = new FileWriter("bad-data-"
