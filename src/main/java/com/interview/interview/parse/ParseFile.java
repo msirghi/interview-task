@@ -36,21 +36,21 @@ public class ParseFile {
 
     while ((row = reader.readNext()) != null) {
       recordsReceived++;
-      int goodRecordCounter = 1;
+      int fileColumn = 1;
       tempRow = row;
       RecordModel record = new RecordModel();
       try {
         for (String column : row) {
           emptyCheck(column);
-          setModelField(record, goodRecordCounter++, column);
+          setModelField(record, fileColumn++, column);
         }
         databaseConfig.performSqlStatement(record);
       } catch (IllegalAccessException e) {
         recordsFailed++;
-        int badRecordColumn = 1;
+        fileColumn = 1;
         RecordModel badRecord = new RecordModel();
-        for (String token : tempRow) {
-          setModelField(badRecord, badRecordColumn++, token);
+        for (String column : tempRow) {
+          setModelField(badRecord, fileColumn++, column);
         }
         csvWriter.append(String.join(",", badRecord.toString()));
         csvWriter.append("\n");
