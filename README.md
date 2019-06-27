@@ -32,8 +32,9 @@ Also be sure to enable Lombok plugin:
 - S4lfj logger used for tracking process(exceptions, etc.);
 - Spring used for ability to see result in H2 database(under /console path);
 
-##Remark:
-If log & bad-data files didn't appear: 'right click on project -> synchronize';
+#### Remark:
+If log & bad-data files didn't appear: 
+`right click on project -> synchronize`;
 
 ### Example screenshots:
 - Rows in H2:
