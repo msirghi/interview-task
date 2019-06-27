@@ -24,11 +24,13 @@ Also be sure to enable Lombok plugin:
 ### Implemented:
 - .CSV file parsing:
   - OpenCSV library is used;
-  - row validation;
+  - row validation using library & empty columns (catching Exceptions);
   - bad rows are written in bad-data-timestamp.csv file;
   - relevant rows are inserted to database;
 - Row statistics can be found in logs/app.log file;
 - H2 database used(check properties & WebH2Configuration class);
+- S4lfj logger used for tracking process(exceptions, etc.);
+- Spring used for ability to see result in H2 database(under /console path);
 
 ### Example screenshots:
 - Rows in H2:
